@@ -18,6 +18,7 @@ module "eks_aws_module" {
   cluster_endpoint_public_access         = true
   cluster_enabled_log_types              = []
   cluster_security_group_name            = "secg1-cluster-eks"
+  cluster_endpoint_public_access_cidrs   = ["93.36.185.79/32"]
   cluster_security_group_use_name_prefix = false
   iam_role_use_name_prefix               = false
   cluster_addons = {
@@ -48,16 +49,21 @@ module "eks_aws_module" {
           }
         }
       }
+
       # security groups
-      create_security_group          = false
+      create_security_group = false
+
       # iam role
-      iam_role_use_name_prefix = false
+      iam_role_use_name_prefix     = false
       iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+
       # node group options
       min_size                   = 1
       desired_size               = 1
       max_size                   = 2
-      enable_bootstrap_user_data = true
+
+      # user data
+      # enable_bootstrap_user_data = true
       pre_bootstrap_user_data    = <<-EOT
       MIME-Version: 1.0
       Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
