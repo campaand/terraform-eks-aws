@@ -58,19 +58,13 @@ module "eks_aws_module" {
       iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
 
       # node group options
-      min_size                   = 1
-      desired_size               = 1
-      max_size                   = 2
+      min_size                   = 0
+      desired_size               = 0
+      max_size                   = 1
 
       # user data
       # enable_bootstrap_user_data = true
       pre_bootstrap_user_data    = <<-EOT
-      MIME-Version: 1.0
-      Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
-
-      --==MYBOUNDARY==
-      Content-Type: text/x-shellscript; charset="us-ascii"
-
       #!/bin/bash
       # Aggiornamento del sistema
       yum update -y
@@ -85,8 +79,6 @@ module "eks_aws_module" {
       mkdir example
       cd example
       touch file.txt
-
-      --==MYBOUNDARY==--
       EOT
     }
   }
